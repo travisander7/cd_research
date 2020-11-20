@@ -14,15 +14,20 @@
 
 \begin{itemize}
 
-    \item Fixed effect: The studies are assumed to investigate the same population, use the same variable and outcome definitions, etc.
+    \item Fixed effect: The studies are assumed to investigate the same
+    population, use the same variable and outcome definitions, etc.
 
-    \item Random effects: The studies are assumed to be heterogeneous.  
+    \item Random effects: The studies are assumed to be heterogeneous
 
 \end{itemize}
 
 \section{Models}
 
-We are considering the case where there are k independent studies done, resulting in k 2 x 2 tables as shown below. The parameter of interest in these cases is often the odds ratio, defined as $OR = \frac{a/b}{c/d} = \frac{ad}{bc}$. We are comparing different methods of pooling the odds ratios.
+We are considering the case where there are k independent studies done,
+resulting in k 2 x 2 tables as shown below. The parameter of interest in these
+cases is often the odds ratio, defined as $OR = \frac{a/b}{c/d} = \frac{ad}{bc}$.
+We are comparing different methods of pooling the odds ratios.
+
 \begin{table}[h!]
 \centering
     \begin{tabular}{|c|c|}
@@ -35,37 +40,65 @@ We are considering the case where there are k independent studies done, resultin
 \caption{2 x 2 table}
 \end{table}
 
-\begin{itemize}
-    \item Inverse variance: Assumes fixed effect framework.
-        \begin{equation}
-            \hat{OR}_{IV} = \frac{\sum_{i=1}^k \text{Var}(\frac{a_i d_i}{b_i c_i})^{-1} \frac{a_i d_i}{b_i c_i}}{\sum_{i=1}^k \text{Var}(\frac{a_i d_i}{b_i c_i})^{-1}} 
-        \end{equation} 
+Following are several common models for pooling the odds ratios.
 
-    \item DerSimonian-Laird: Adaption of inverse variance for random effects framework.
-        \begin{equation}
-            \hat{OR}_{DL} =
-        \end{equation} 
-        
-    \item Mantel-Haenszel: Assumes fixed effect framework. Better at binary outcomes than inverse variance.
-        \begin{equation}
-            \hat{OR}_{MH} = \frac{\sum_{i=1}^k \frac{a_i d_i}{n_i}}{\sum_{i=1}^k \frac{b_i c_i}{n_i}}, \text{where } n_i = a_i + b_i + c_i + d_i
-        \end{equation}    
-        
-    \item Peto: Can cause bias when samples are very unbalanced. Different from odds ratio. 
-        \begin{equation}
-            \hat{\psi}_{pooled} = \text{exp}(\frac{\sum_{i=1}^k (O_i - E_i)}{\sum_{i=1}^k V_i})
-        \end{equation} 
-        O, E, and V are defined as follows (where $n = a+b+c+d$):
-        \begin{equation}
-            O = a
-        \end{equation}
-        \begin{equation}
-            E = \frac{(a+b)(a+c)}{n}
-        \end{equation}
-        \begin{equation}
-            V = \frac{(a+b)(c+d)(a+c)(b+d)}{n^2(n-1)}
-        \end{equation}
-        
+\subsection{Inverse Variance}
+
+\begin{equation}
+    \hat{OR}_{pooled} = \frac
+    {\sum_{i=1}^k \text{Var}(\frac{a_i d_i}{b_i c_i})^{-1} \frac{a_i d_i}{b_i c_i}}
+    {\sum_{i=1}^k \text{Var}(\frac{a_i d_i}{b_i c_i})^{-1}}
+\end{equation}
+
+\begin{itemize}
+  \item Assumes fixed effect framework.
+\end{itemize}
+
+\subsection{DerSimonian-Laird}
+
+\begin{equation}
+    \hat{OR}_{pooled} =
+\end{equation}
+
+\begin{itemize}
+  \item Assumes random effects framework.
+  \item Adaption of inverse variance for random effects framework.
+  \item Most common for medical and psychological research
+  \item Prone to producing false positives, especially when the number of
+  studies is small
+\end{itemize}
+
+\subsection{Mantel-Haenszel}
+
+\begin{equation}
+    \hat{OR}_{pooled} = \frac
+    {\sum_{i=1}^k \frac{a_i d_i}{n_i}}
+    {\sum_{i=1}^k \frac{b_i c_i}{n_i}},
+    \text{where } n_i = a_i + b_i + c_i + d_i
+\end{equation}
+
+\begin{itemize}
+  \item Assumes fixed effect framework
+  \item Better at binary outcomes than inverse variance.
+\end{itemize}
+
+\subsection{Peto}
+
+\begin{equation}
+    \hat{OR}_{pooled} = \text{exp}
+    (\frac{\sum_{i=1}^k (O_i - E_i)}{\sum_{i=1}^k V_i})
+\end{equation}
+
+O, E, and V are defined such that $O = a$, $E = \frac{(a+b)(a+c)}{n}$, and
+$V = \frac{(a+b)(c+d)(a+c)(b+d)}{n^2(n-1)}$ (where $n = a+b+c+d$).
+
+\begin{itemize}
+  \item Assumes fixed effect framework
+  \item Only used for odds ratios
+  \item Works best when odds ratios are close to one
+  \item Performs well for rare events
+  \item Can cause bias when samples are very unbalanced
+  \item Corrections for zero cell counts are not necessary
 \end{itemize}
 
 \end{document}
