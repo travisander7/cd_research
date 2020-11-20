@@ -1,0 +1,71 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+
+\title{Meta Analysis}
+\author{Travis Andersen }
+\date{November 2020}
+
+\begin{document}
+
+\maketitle
+
+\section{Frameworks}
+
+\begin{itemize}
+
+    \item Fixed effect: The studies are assumed to investigate the same population, use the same variable and outcome definitions, etc.
+
+    \item Random effects: The studies are assumed to be heterogeneous.  
+
+\end{itemize}
+
+\section{Models}
+
+We are considering the case where there are k independent studies done, resulting in k 2 x 2 tables as shown below. The parameter of interest in these cases is often the odds ratio, defined as $OR = \frac{a/b}{c/d} = \frac{ad}{bc}$. We are comparing different methods of pooling the odds ratios.
+\begin{table}[h!]
+\centering
+    \begin{tabular}{|c|c|}
+        \hline
+        a & b \\
+        \hline
+        c & d \\
+        \hline
+    \end{tabular}
+\caption{2 x 2 table}
+\end{table}
+
+\begin{itemize}
+    \item Inverse variance: Assumes fixed effect framework.
+        \begin{equation}
+            \hat{OR}_{IV} = \frac{\sum_{i=1}^k \text{Var}(\frac{a_i d_i}{b_i c_i})^{-1} \frac{a_i d_i}{b_i c_i}}{\sum_{i=1}^k \text{Var}(\frac{a_i d_i}{b_i c_i})^{-1}} 
+        \end{equation} 
+
+    \item DerSimonian-Laird: Adaption of inverse variance for random effects framework.
+        \begin{equation}
+            \hat{OR}_{DL} =
+        \end{equation} 
+        
+    \item Mantel-Haenszel: Assumes fixed effect framework. Better at binary outcomes than inverse variance.
+        \begin{equation}
+            \hat{OR}_{MH} = \frac{\sum_{i=1}^k \frac{a_i d_i}{n_i}}{\sum_{i=1}^k \frac{b_i c_i}{n_i}}, \text{where } n_i = a_i + b_i + c_i + d_i
+        \end{equation}    
+        
+    \item Peto: Can cause bias when samples are very unbalanced. Different from odds ratio. 
+        \begin{equation}
+            \hat{\psi}_{pooled} = \text{exp}(\frac{\sum_{i=1}^k (O_i - E_i)}{\sum_{i=1}^k V_i})
+        \end{equation} 
+        O, E, and V are defined as follows (where $n = a+b+c+d$):
+        \begin{equation}
+            O = a
+        \end{equation}
+        \begin{equation}
+            E = \frac{(a+b)(a+c)}{n}
+        \end{equation}
+        \begin{equation}
+            V = \frac{(a+b)(c+d)(a+c)(b+d)}{n^2(n-1)}
+        \end{equation}
+        
+\end{itemize}
+
+\end{document}
