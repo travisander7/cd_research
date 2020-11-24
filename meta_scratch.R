@@ -33,7 +33,10 @@ df <- df %>%
     var = 1/Ee + 1/(Nc-Ec) + 1/Ec + 1/(Ne-Ee),
     lower = exp(qnorm(0.025, log(OR), sqrt(var))),
     upper = exp(qnorm(0.975, log(OR), sqrt(var))),
-    weight = ((exp(var) - 1)*exp(2*log(OR) + var))^-1
+    weight = (1/var)/sum(1/var) * 100
   )
-
 print(df)
+
+df %>%
+  summarize(OR = exp(sum(log(OR)*weight)/100))
+# Find variance of pooled odds ratio
