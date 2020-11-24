@@ -1,14 +1,12 @@
 # meta::metabin()
 #   Run a simple meta analysis and look out output
-#   Do some by hand (Inverse variance fixed effect and DurStemonian Laird random effects)
+#   Do some by hand (Inverse variance fixed effect and DerSimonian Laird random effects)
 #   Find dataset or make up dataset
 library(tidyverse)
 
 df <- read_csv('binary_data.csv')
 
 m <- meta::metabin(Ee, Ne, Ec, Nc, data = df, studlab = Author, method = 'Inverse', sm = 'OR')
-
-
 
 #                         OR           95%-CI %W(fixed) %W(random)
 # Alcorta-Fleischmann 0.4982 [0.0445; 5.5741]       1.5        1.5
@@ -33,9 +31,9 @@ df <- df %>%
   mutate(
     OR = (Ee*(Nc-Ec))/(Ec*(Ne-Ee)),
     var = 1/Ee + 1/(Nc-Ec) + 1/Ec + 1/(Ne-Ee),
-    lower = exp(log(OR) - qnorm(0.975)*sqrt(var)),
-    upper = exp(log(OR) + qnorm(0.975)*sqrt(var)),
-    a = 1/(OR*var)
+    lower = exp(qnorm(0.025, log(OR), sqrt(var))),
+    upper = exp(qnorm(0.975, log(OR), sqrt(var))),
+    weight = ((exp(var) - 1)*exp(2*log(OR) + var))^-1
   )
 
 print(df)
