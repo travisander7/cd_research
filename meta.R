@@ -27,6 +27,7 @@ m <- meta::metabin(Ee, Ne, Ec, Nc, data = df, studlab = Author, method = 'Invers
 # Adjust for zeros
 df[5, 2:5] <- df[5, 2:5] + 0.5
 
+# Calculations for each study
 df <- df %>%
   mutate(
     OR = (Ee*(Nc-Ec))/(Ec*(Ne-Ee)),
@@ -35,8 +36,19 @@ df <- df %>%
     upper = exp(qnorm(0.975, log(OR), sqrt(var))),
     weight = (1/var)/sum(1/var) * 100
   )
-print(df)
 
+# Pooled calculations
+# Need variance of pooled odds ratio
 df %>%
-  summarize(OR = exp(sum(log(OR)*weight)/100))
-# Find variance of pooled odds ratio
+  summarize(
+    OR = exp(sum(log(OR)*weight)/100)
+  ) %>%
+  mutate(
+    lower = exp(qnorm(0.025, log(OR), sqrt(var))),
+    upper = exp(qnorm(0.975, log(OR), sqrt(var))),
+    z = log(OR)/sqrt(var),
+    p_value = 2*pnorm(z)
+  )
+
+print(m)
+print(df)
