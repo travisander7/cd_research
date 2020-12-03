@@ -22,3 +22,7 @@ var <- 1/sum(w)
 ci <- exp(qnorm(c(0.025, 0.975), log(OR), sqrt(var)))
 z <- log(OR)/sqrt(var)
 p_value <- 2*pnorm(z)
+
+print(m)
+print(OR)
+print(p_value)
