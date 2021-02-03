@@ -7,10 +7,26 @@
 \begin{document}
 \maketitle
 
-A sufficient statistic is a statistic that will result in the same inference on parameters as the whole sample. This is implies that 
+A sufficient statistic is a statistic that, if known, will result in the same inference on parameters as the whole sample. That is to say that if $\textbf{x}$ and $\textbf{y}$ are two possible samples, such that $T(\textbf{x}) = T(\textbf{y})$, then inference on $\theta$ is the same regardless of whether $\textbf{x}$ or $\textbf{y}$ is sampled. 
+
+A sufficient statistic can be found by the factorization theorem, which states that $T(\textbf{x})$ is a sufficient statistic if and only if functions $g$ and $h$ can be found that satisfy the following equation:  
 
 \begin{equation*}
-  f(x|\theta)
+  f(\textbf{x}|\theta) = g(T(\textbf{x})|\theta) h(\textbf{x})
 \end{equation*}
+
+Sufficient statistics also have a relationship with exponential families, where for a random sample of size $n$ from an exponential family with pmf/pdf
+
+\begin{equation*}
+  f(\textbf{x}|\theta) = h(x) c(\theta) \text{exp}(\sum_{i=1}^k w_i(\theta) t_i(x)),
+\end{equation*}
+
+$T(\textbf{X})$ defined as follows is a sufficient statistic for $\theta$. 
+
+\begin{equation*}
+  T(\textbf{X}) = (\sum_{j=1}^n t_1(X_j), ..., \sum_{j=1}^n t_k(X_j))
+\end{equation*}
+
+A minimal sufficient statistic is a sufficient statistic that has been reduced as far as possible. A minimal sufficient statistic must be a function of any other sufficient statistic. 
 
 \end{document}
