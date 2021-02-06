@@ -1,0 +1,25 @@
+\documentclass{beamer}
+
+\title{Confidence distributions in meta analysis}
+\author{Travis Andersen}
+
+\begin{document}
+
+\begin{frame}
+  \maketitle
+\end{frame}
+
+\begin{frame}
+  \frametitle{Problem Definition}
+    \begin{itemize}
+      \item Temporal dependence
+      \item Autoregressive (AR) process
+      \begin{equation*}
+        y_t = \phi_1 y_{t-1}+\phi_2 y_{t-2} + ... + \phi_p y_{t-p} + \epsilon_t, \, \epsilon_t \sim N(0, \sigma^2)
+      \end{equation*}
+      \item How to best determine the optimal value of $p$?
+    \end{itemize}
+  \end{frame}
+
+
+\end{document}

@@ -34,3 +34,4 @@ pmf <- tibble(
   mutate(p = p/sum(p)) %>%
   group_by(t) %>%
   summarize(p = sum(p))
+
