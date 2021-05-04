@@ -1,7 +1,7 @@
 library(tidyverse)
 source('code/CMLE.R')
 
-get_est <- function(dist, t){
+get_est <- function(dist, t, alpha = 0.05){
   u <- dist$t
   p <- dist$p.norm
 
@@ -25,10 +25,10 @@ get_est <- function(dist, t){
     t <- t - min(u)
     u <- u - min(u)
     beta_hats <- CMLE(p, u, t, t.or.alpha = t, ci = FALSE)
-    lower <- CMLE(p, u, t, t.or.alpha = 0.025, ci = TRUE, dir = 'lower', midp = FALSE)
-    upper <- CMLE(p, u, t, t.or.alpha = 0.025, ci = TRUE, dir = 'upper', midp = FALSE)
-    midp_lower <- CMLE(p, u, t, t.or.alpha = 0.025, ci = TRUE, dir = 'lower', midp = TRUE)
-    midp_upper <- CMLE(p, u, t, t.or.alpha = 0.025, ci = TRUE, dir = 'upper', midp = TRUE) 
+    lower <- CMLE(p, u, t, t.or.alpha = alpha/2, ci = TRUE, dir = 'lower', midp = FALSE)
+    upper <- CMLE(p, u, t, t.or.alpha = alpha/2, ci = TRUE, dir = 'upper', midp = FALSE)
+    midp_lower <- CMLE(p, u, t, t.or.alpha = alpha/2, ci = TRUE, dir = 'lower', midp = TRUE)
+    midp_upper <- CMLE(p, u, t, t.or.alpha = alpha/2, ci = TRUE, dir = 'upper', midp = TRUE) 
     tibble(beta_hats, lower, upper, midp_lower, midp_upper, p_val, midp_val, only_one, at_extreme, approx_extreme) 
   }
 }
