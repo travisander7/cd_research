@@ -1,5 +1,5 @@
 library(tidyverse)
-source('code/CMLE.R')
+source('zab_code/CMLE.R')
 
 get_est <- function(dist, t, alpha = 0.05){
   u <- dist$t
