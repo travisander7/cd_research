@@ -35,3 +35,10 @@ tibble(
   geom_line(aes(beta, alpha)) +
   geom_line(aes(lower, alpha), cd_int, col = 'blue') +
   geom_line(aes(upper, alpha), cd_int, col = 'blue')
+
+#################### Both on same graph ####################
+ggplot(cd_int) +
+  geom_line(aes(midp_lower, alpha), cd_int) +
+  geom_line(aes(midp_upper, alpha), cd_int) +
+  geom_line(aes(lower, alpha), cd_int, linetype = 'dashed') +
+  geom_line(aes(upper, alpha), cd_int, linetype = 'dashed')
