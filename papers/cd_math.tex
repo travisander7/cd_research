@@ -1,0 +1,26 @@
+\documentclass{article}
+\usepackage{amsmath}
+
+\title{Confidence distribution for exact permutation method}
+\author{Travis Andersen}
+
+\begin{document}
+\maketitle  
+
+Let $\theta \in \Theta$ and $\textbf{Y} \in \mathcal{Y}$. A confidence distribution is a function $C(\theta|\textbf{Y})$ on $\Theta \times \mathcal{Y} \to [0, 1]$ that satisfies the following:
+
+\begin{enumerate}
+  \item For each $\textbf{Y} \in \mathcal{Y}$, $C(\theta|\textbf{Y})$ is a cdf for $\theta$. 
+  \item When $\theta$ is the true parameter, $C(\theta|\textbf{Y}) \sim U(0, 1)$
+\end{enumerate}
+
+\section{Show $C(\theta|\textbf{Y})$ is a cdf}
+\begin{enumerate}
+  \item Show $\lim_{n \to -\infty} C(\theta|\textbf{Y}) \to 0$ and $\lim_{n \to \infty} C(\theta|\textbf{Y}) \to 1$
+  \item Show $C(\theta|\textbf{Y})$ is nondecreasing
+  \item Show $C(\theta|\textbf{Y})$ is right-continuous
+\end{enumerate}
+
+\section{Show $C(\theta|\textbf{Y}) \sim U(0, 1)$ when $\theta$ is the true parameter}
+
+\end{document}
