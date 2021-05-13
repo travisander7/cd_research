@@ -23,4 +23,8 @@ Let $\theta \in \Theta$ and $\textbf{Y} \in \mathcal{Y}$. A confidence distribut
 
 \section{Show $C(\theta|\textbf{Y}) \sim U(0, 1)$ when $\theta$ is the true parameter}
 
+\begin{align*}
+  C(\theta|\textbf{Y}) = P_\beta(t(z) \leq t(z_{obs})) &= \frac{\sum_{u^*=\text{min}(t(z))}^{t(z_{obs})} C(u^*|s^\alpha(z), s^\delta(z))e^{\theta u^*}}{\sum_{u^*=\text{min}(t(z))}^{\text{max}(t(z))} C(u|s^\alpha(z), s^\delta(z))e^{\theta u}} = \alpha \\
+\end{align*}
+
 \end{document}
