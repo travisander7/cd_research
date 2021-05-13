@@ -1,4 +1,4 @@
-get_cd <- function(beta, dist, t, midp = TRUE){
+get_cd <- function(beta, dist, t){
   # Prepare variables
   prob <- dist$p.norm
   u <- dist$t
@@ -7,5 +7,5 @@ get_cd <- function(beta, dist, t, midp = TRUE){
   # Calculate CD
   u_prob <- prob*exp(u*beta)
   p <- u_prob/sum(u_prob)
-  ifelse(midp, sum(p[u > t]) + 0.5*p[u == t], sum(p[u > t]))
+  sum(p[u > t]) + 0.5*p[u == t]
 }
