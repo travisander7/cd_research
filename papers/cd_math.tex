@@ -7,24 +7,74 @@
 \begin{document}
 \maketitle  
 
-Let $\theta \in \Theta$ and $\textbf{Y} \in \mathcal{Y}$. A confidence distribution is a function $C(\theta|\textbf{Y})$ on $\Theta \times \mathcal{Y} \to [0, 1]$ that satisfies the following:
-
-\begin{enumerate}
-  \item For each $\textbf{Y} \in \mathcal{Y}$, $C(\theta|\textbf{Y})$ is a cdf for $\theta$. 
-  \item When $\theta$ is the true parameter, $C(\theta|\textbf{Y}) \sim U(0, 1)$
-\end{enumerate}
-
-\section{Show $C(\theta|\textbf{Y})$ is a cdf}
-\begin{enumerate}
-  \item Show $\lim_{n \to -\infty} C(\theta|\textbf{Y}) \to 0$ and $\lim_{n \to \infty} C(\theta|\textbf{Y}) \to 1$
-  \item Show $C(\theta|\textbf{Y})$ is nondecreasing
-  \item Show $C(\theta|\textbf{Y})$ is right-continuous
-\end{enumerate}
-
-\section{Show $C(\theta|\textbf{Y}) \sim U(0, 1)$ when $\theta$ is the true parameter}
+Let $\theta \in \Theta$ and $\textbf{Z} \in \mathcal{Z}$. A confidence distribution is a function $C(\theta|\textbf{Z})$ on $\Theta \times \mathcal{Z} \to [0, 1]$ that satisfies the following:
 
 \begin{align*}
-  C(\theta|\textbf{Y}) = P_\beta(t(z) \leq t(z_{obs})) &= \frac{\sum_{u^*=\text{min}(t(z))}^{t(z_{obs})} C(u^*|s^\alpha(z), s^\delta(z))e^{\theta u^*}}{\sum_{u^*=\text{min}(t(z))}^{\text{max}(t(z))} C(u|s^\alpha(z), s^\delta(z))e^{\theta u}} = \alpha \\
+  C(\theta|\textbf{z}) = P_\theta(t(z) \geq t(z_{obs})) = \frac
+  {\sum_{u^*=t(z_{obs})}^{\text{max}(t(z))} C(u^*|s^\alpha(z), s^\delta(z), s^{\delta_2}(z))e^{\theta u^*}}
+  {\sum_{u=\text{min}(t(z))}^{\text{max}(t(z))} C(u|s^\alpha(z), s^{\delta_1}(z), s^{\delta_2}(z))e^{\theta u}}
+  = \alpha
 \end{align*}
+
+\begin{enumerate}
+  \item For each $\textbf{Z} \in \mathcal{Z}$, $C(\theta|\textbf{z})$ is a cdf for $\theta$. 
+  \item When $\theta$ is the true parameter, $C(\theta|\textbf{z}) \sim U(0, 1)$
+\end{enumerate}
+
+\section{Show $C(\theta|\textbf{z})$ is a cdf}
+\subsection{Show $\lim_{\theta \to -\infty} C(\theta|\textbf{z}) = 0$ and $\lim_{\theta \to \infty} C(\theta|\textbf{z}) = 1$}
+\begin{align*}
+  \lim_{\theta \to -\infty} C(\theta|\textbf{z}) 
+  &= \lim_{\theta \to -\infty} \frac
+  {\sum_{u^*=t(z_{obs})}^{\text{max}(t(z))} C(u^*|s^\alpha(z), s^\delta(z), s^{\delta_2}(z))e^{\theta u^*}}
+  {\sum_{u=\text{min}(t(z))}^{\text{max}(t(z))} C(u|s^\alpha(z), s^{\delta_1}(z), s^{\delta_2}(z))e^{\theta u}} \\
+  &= \lim_{\theta \to -\infty} \frac
+  {\sum_{u^*=t(z_{obs})-\text{min}(t(z))}^{\text{max}(t(z))-\text{min}(t(z))} 
+  C(u^*+\text{min}(t(z))|s^\alpha(z), s^\delta(z), s^{\delta_2}(z))e^{\theta (u^*+\text{min}(t(z)))}}
+  {\sum_{u=0}^{\text{max}(t(z))-\text{min}(t(z))} 
+  C(u+\text{min}(t(z))|s^\alpha(z), s^{\delta_1}(z), s^{\delta_2}(z))e^{\theta (u+\text{min}(t(z)))}} \\
+  &= \lim_{\theta \to -\infty} \frac
+  {e^{\theta \text{min}(t(z))} \sum_{u^*=t(z_{obs})-\text{min}(t(z))}^{\text{max}(t(z))-\text{min}(t(z))} 
+  C(u^*+\text{min}(t(z))|s^\alpha(z), s^\delta(z), s^{\delta_2}(z))e^{\theta u^*}}
+  {e^{\theta \text{min}(t(z))} \sum_{u=0}^{\text{max}(t(z))-\text{min}(t(z))} 
+  C(u+\text{min}(t(z))|s^\alpha(z), s^{\delta_1}(z), s^{\delta_2}(z))e^{\theta u}} \\
+  &= \lim_{\theta \to -\infty} \frac
+  {\sum_{u^*=t(z_{obs})-\text{min}(t(z))}^{\text{max}(t(z))-\text{min}(t(z))} 
+  C(u^*+\text{min}(t(z))|s^\alpha(z), s^\delta(z), s^{\delta_2}(z))e^{\theta u^*}}
+  {C(\text{min}(t(z))|s^\alpha(z), s^{\delta_1}(z), s^{\delta_2}(z))+\sum_{u=1}^{\text{max}(t(z))-\text{min}(t(z))} 
+  C(u+\text{min}(t(z))|s^\alpha(z), s^{\delta_1}(z), s^{\delta_2}(z))e^{\theta u}} \\
+  &= \frac{0}{C(\text{min}(t(z))|s^\alpha(z), s^{\delta_1}(z), s^{\delta_2}(z))+0} = 0
+  \text{, for } t(z_{obs}) > \text{min}(t(z)) \\
+\end{align*}
+
+\begin{align*}
+  \lim_{\theta \to \infty} C(\theta|\textbf{z}) 
+  &= \lim_{\theta \to \infty} \frac
+  {\sum_{u^*=t(z_{obs})}^{\text{max}(t(z))} C(u^*|s^\alpha(z), s^\delta(z), s^{\delta_2}(z))e^{\theta u^*}}
+  {\sum_{u=\text{min}(t(z))}^{\text{max}(t(z))} C(u|s^\alpha(z), s^{\delta_1}(z), s^{\delta_2}(z))e^{\theta u}} \\
+  &= \lim_{\theta \to \infty} \frac
+  {e^{-\theta \text{max}(t(z))} \sum_{u^*=t(z_{obs})}^{\text{max}(t(z))} 
+  C(u^*|s^\alpha(z), s^\delta(z), s^{\delta_2}(z))e^{\theta u^*}}
+  {e^{-\theta \text{max}(t(z))} \sum_{u=\text{min}(t(z))}^{\text{max}(t(z))} 
+  C(u|s^\alpha(z), s^{\delta_1}(z), s^{\delta_2}(z))e^{\theta u}} \\
+  &= \lim_{\theta \to \infty} \frac
+  {\sum_{u^*=t(z_{obs})}^{\text{max}(t(z))} 
+  C(u^*|s^\alpha(z), s^\delta(z), s^{\delta_2}(z))e^{\theta (u^*-\text{max}(t(z)))}}
+  {\sum_{u=\text{min}(t(z))}^{\text{max}(t(z))} 
+  C(u|s^\alpha(z), s^{\delta_1}(z), s^{\delta_2}(z))e^{\theta (u^*-\text{max}(t(z)))}} \\
+  &= \lim_{\theta \to \infty} \frac
+  {C(\text{max}(t(z)))|s^\alpha(z), s^\delta(z), s^{\delta_2}(z)) + \sum_{u^*=t(z_{obs})}^{\text{max}(t(z))-1} 
+  C(u^*|s^\alpha(z), s^\delta(z), s^{\delta_2}(z))e^{\theta (u^*-\text{max}(t(z)))}}
+  {C(\text{max}(t(z)))|s^\alpha(z), s^\delta(z), s^{\delta_2}(z)) + \sum_{u=\text{min}(t(z))}^{\text{max}(t(z))-1} 
+  C(u|s^\alpha(z), s^{\delta_1}(z), s^{\delta_2}(z))e^{\theta (u^*-\text{max}(t(z)))}} \\
+  &= \frac
+  {C(\text{max}(t(z)))|s^\alpha(z), s^\delta(z), s^{\delta_2}(z)) + 0}
+  {C(\text{max}(t(z)))|s^\alpha(z), s^\delta(z), s^{\delta_2}(z)) + 0} = 1 \\
+\end{align*}
+
+\subsection{Show $C(\theta|\textbf{z})$ is nondecreasing}
+\subsection{Show $C(\theta|\textbf{z})$ is right-continuous}
+
+\section{Show $C(\theta|\textbf{z}) \sim U(0, 1)$ when $\theta$ is the true parameter}
 
 \end{document}
