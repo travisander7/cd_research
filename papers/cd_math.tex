@@ -73,7 +73,25 @@ Let $\theta \in \Theta$ and $\textbf{Z} \in \mathcal{Z}$. A confidence distribut
 \end{align*}
 
 \subsection{Show $C(\theta|\textbf{z})$ is nondecreasing}
+\begin{align*}
+  \text{log}[C(\theta|\textbf{z})] &= 
+  \text{log}\left(
+    \sum_{u^*=t(z_{obs})}^{\text{max}(t(z))} C(u^*|s^\alpha(z), s^\delta(z), s^{\delta_2}(z))e^{\theta u^*}
+  \right) - 
+  \text{log}\left(
+    \sum_{u=\text{min}(t(z))}^{\text{max}(t(z))} C(u|s^\alpha(z), s^{\delta_1}(z), s^{\delta_2}(z))e^{\theta u}
+  \right) \\
+  \frac{\partial}{\partial \theta} \text{log}[C(\theta|\textbf{z})] &= 
+  \frac
+  {\sum_{u^*=t(z_{obs})}^{\text{max}(t(z))} u^* C(u^*|s^\alpha(z), s^\delta(z), s^{\delta_2}(z))e^{\theta u^*}}
+  {\sum_{u^*=t(z_{obs})}^{\text{max}(t(z))} C(u^*|s^\alpha(z), s^\delta(z), s^{\delta_2}(z))e^{\theta u^*}} -
+  \frac
+  {\sum_{u=\text{min}(t(z))}^{\text{max}(t(z))} u C(u|s^\alpha(z), s^{\delta_1}(z), s^{\delta_2}(z))e^{\theta u}}
+  {\sum_{u=\text{min}(t(z))}^{\text{max}(t(z))} C(u|s^\alpha(z), s^{\delta_1}(z), s^{\delta_2}(z))e^{\theta u}}
+\end{align*}
+
 \subsection{Show $C(\theta|\textbf{z})$ is right-continuous}
+$C(\theta|\textbf{z})$ is a continuous function. 
 
 \section{Show $C(\theta|\textbf{z}) \sim U(0, 1)$ when $\theta$ is the true parameter}
 
