@@ -13,11 +13,11 @@ dist <- read_table('data/AntibioticsRheumaticFever_distn_32.txt', col_names = c(
 
 #################### Graph ####################
 tibble(
-  theta = seq(-2, 1, length = 1000),
-  perm = 1 - 2*abs(0.5-map_dbl(theta, get_cd, dist, t_obs)),
-  liu = 1 - 2*abs(0.5-gmeta(as.matrix(data), gmi.type = '2x2', method = 'exact1', gmo.xgrid = theta, report.error = TRUE)$combined.cd)
+  theta = seq(-2, 2, length = 1000),
+  perm = get_cd(theta, dist$p.norm, dist$t, t_obs),
+  liu = gmeta(as.matrix(data), gmi.type = '2x2', method = 'exact1', gmo.xgrid = theta, report.error = TRUE)$combined.cd
 ) %>%
   pivot_longer(-theta, names_to = 'method', values_to = 'alpha') %>%
-  ggplot(aes(theta, alpha, col = method)) +
+  ggplot(aes(theta, 1-2*abs(0.5-alpha), col = method)) +
   geom_line() +
   geom_hline(yintercept = 0.05, linetype = 'dashed')
