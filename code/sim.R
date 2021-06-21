@@ -1,10 +1,22 @@
 library(tidyverse)
 source('zab_code/pRandom_flexible.R')
 source('code/get_cd.R')
-source("zab_code/FullOriginalGmetaCode.R")
 # 4 middle, 1 high end, 55 low end
 seed <- 4
 set.seed(seed)
+
+F2f<-function (x, Fx) {
+  fx = diff(Fx, lag = 2)/diff(x, lag = 2)
+  fx = c(NA, fx, NA) # match the length of x-fx-cdf
+  # n.xgrids
+  n = length(fx)
+  # liner extrapolation
+  fx[1] = max(0, (fx[2]-fx[3])/(x[2]-x[3]) * (x[1]-x[2]) + fx[2])
+  fx[n] = max(0, (fx[n-1]-fx[n-2])/(x[n-1]-x[n-2]) * (x[n]-x[n-1]) + fx[n-1])
+  # return
+  return(fx)
+  #[update in v2.0: previously #return(c(NA, fx, NA)) # NA so that the edge of the plot of density is right.]
+}
 
 data <- pRandom(
   theta = 1, 
@@ -24,7 +36,7 @@ t_obs <- sum(data$TRT_event)
 tibble(
   thetas = seq(-2, 4, length = 1000),
   cd = get_cd(thetas, dist$norm.probs, dist$test.stat, t_obs),
-  liu = gmeta(
+  liu = gmeta::gmeta(
     as.matrix(data), 
     gmi.type = '2x2', 
     method = 'exact1', 
@@ -36,7 +48,7 @@ tibble(
   group_by(method) %>%
   mutate(
     curve = 1 - 2*abs(0.5-distribution),
-    density = c(NA, diff(distribution, 2)/diff(thetas, 2), NA)
+    density = F2f(thetas, distribution) # c(NA, diff(distribution, 2)/diff(thetas, 2), NA) (same as F2f)
   ) %>%
   pivot_longer(-c(thetas, method), names_to = 'type') %>%
   ggplot(aes(thetas, value, col = method)) +
