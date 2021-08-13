@@ -1,22 +1,36 @@
 library(tidyverse)
 
-df <- read_csv('data/sim.csv')
+df <- read_csv('data/sim_results.csv')
 
+# Analysis of number of only one or extreme datasets
 df %>%  
-	group_by(p_ic_init, tau2) %>% 
+	group_by(theta, p_ic_init, tau2) %>% 
 	summarize(
 		only_one = sum(only_one), 
 		good = (n() - sum(extreme))/3, 
-		extreme = 5000 - only_one - good
+		extreme = 1000 - only_one - good
 	) %>%
   pivot_longer(c(only_one, good, extreme)) %>%
-  ggplot(aes(tau2, value, fill = name)) +
-  geom_col(position = 'dodge')
+  ggplot(aes(theta, value, col = name)) +
+  geom_line() +
+	facet_grid(vars(tau2), vars(p_ic_init))
 
-df %>%
+# Analysis of area and height by theta, p_ic_init, and tau2
+plot <- df %>%
 	filter(!only_one, !extreme) %>%
-	group_by(p_ic_init, tau2, method) %>%
+	group_by(theta, p_ic_init, tau2, method) %>%
 	summarize(
 		area = mean(area),
 		height = mean(height)
-	)
+	) %>%
+	ggplot(aes(theta, col = method)) +
+	facet_grid(vars(tau2), vars(p_ic_init))
+
+plot + geom_line(aes(y = area))
+plot + geom_line(aes(y = height))
+
+# Analyze whether height ~ Unif(0, 1)
+df %>%
+	filter(!only_one, !extreme) %>%
+	ggplot(aes(height, col = method)) +
+	geom_density()
