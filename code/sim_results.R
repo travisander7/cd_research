@@ -1,6 +1,6 @@
 library(tidyverse)
 
-df <- read_csv('sim_results.csv') %>%
+df <- read_csv('data/sim_results.csv') %>%
   drop_na %>%
   filter(
     !(theta == -1 & tau2 == 0.2 & rep == 233),
@@ -16,12 +16,40 @@ df <- read_csv('sim_results.csv') %>%
   mutate(height3 = map_dbl(height, ~min(.x/0.2, 1)))
 
 ########## Area ##########
+# 1) Change "area" to "Area Under the CV"
+# 2) Move the legend to be at the bottom
+# 3) Change "method" to "CD Method"
+# 4) Change "II-CC-FF" to "Cunen and Hjort"
+# 5) Change "Liu" to "Liu et al."
+# 6) Change "Permutation-Based"
+# 7) Make all values of theta show up on the x-axis (so include -0.5 and 0.5)
 df %>%
   group_by(method, theta, tau2) %>%
   summarize_at('area', mean) %>%
-  ggplot(aes(theta, area, col = method)) +
+  mutate(`CD method` = recode(
+    method, 
+    perm = 'Permutation-Based', 
+    liu = 'Liu et al.', 
+    ii_cc_ff = 'Cunen and Hjort'
+  )) %>%
+  ggplot(aes(theta, area, col = `CD method`)) +
   geom_line() +
-  facet_wrap(~tau2)
+  geom_point() +
+  facet_grid(cols = vars(tau2)) +
+  theme_classic() +
+  xlab(expression(theta)) +
+  ylab('Area Under the CV') +
+  scale_x_continuous(
+    breaks = c(-1, -0.5, 0, 0.5, 1),
+    sec.axis = sec_axis(~ ., name = expression(tau^2), breaks = NULL, labels = NULL)
+  ) +
+  scale_y_continuous(breaks = 0:4) +
+  ylim(0, 4) +
+  theme(
+    legend.position = 'bottom', 
+    legend.title = element_blank()
+  )
+# ggsave(filename = 'data/area.png', width = 6, height = 3)
 
 ########## Height ##########
 df %>%
@@ -31,6 +59,26 @@ df %>%
   ggplot(aes(theta, value, col = method)) +
   geom_line() + 
   facet_grid(vars(metric), vars(tau2), scales = 'free_y')
+
+df %>%
+  group_by(method, theta, tau2) %>%
+  summarize_at('height', mean) %>%
+  ggplot(aes(theta, height, col = method)) +
+  geom_line() + 
+  geom_point() +
+  geom_hline(yintercept = 0.5 + qnorm(c(0.025, 0.975))/sqrt(12*1000), linetype = 'dashed') +
+  facet_grid(cols = vars(tau2))
+
+x <- replicate(10000, mean(sapply(runif(1000), function(x) min(x/0.2, 1))))
+ci <- quantile(x, c(0.025, 0.975))
+df %>%
+  group_by(method, theta, tau2) %>%
+  summarize_at('height3', mean) %>%
+  ggplot(aes(theta, height3, col = method)) +
+  geom_line() + 
+  geom_point() +
+  geom_hline(yintercept = ci, linetype = 'dashed') +
+  facet_grid(cols = vars(tau2))
 
 ########## Height graph ##########
 get_coverage <- function(alpha, .method, .theta, .tau2){
