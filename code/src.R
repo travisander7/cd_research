@@ -87,7 +87,7 @@ source("code/FullOriginalGmetaCode.R")
 meta <- df %>%
   mutate_if(is.numeric, function(x) ifelse(.$correction, x - 0.5, x)) %>%
   select(Ee, Ne, Ec, Nc) %>%
-  gmeta(
+  gmeta::gmeta(
     gmi.type = "2x2", 
     method = "exact1", 
     gmo.xgrid = seq(-6, 6, by = 0.001), 
@@ -97,7 +97,7 @@ meta <- df %>%
 meta_mean <- meta$combined.mean
 meta_sd <- meta$combined.sd
 
-pdf('presentations/cd_meta.pdf')
+png('papers/cd_meta.png')
 cd_plot <- pvaluefunctions::conf_dist(
   estimate = c(log(df$OR), meta_mean)
   , stderr = c(sqrt(df$var), meta_sd)

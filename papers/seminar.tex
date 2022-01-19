@@ -1,0 +1,113 @@
+\documentclass{beamer}
+
+\title{A Permutation-Based Confidence Distribution for Rare-Event Meta-Analysis}
+\author{Travis Andersen \and Dr Brinley Zabriskie}
+
+\begin{document}
+
+\begin{frame}
+  \maketitle
+\end{frame}
+
+% Multiple studies often occur in medical field
+% Beta-blockers prevent heart disease
+% The parameter of interest is the log odds ratio
+\begin{frame} 
+  \frametitle{Meta-analysis}
+  \begin{itemize}
+    \item Meta-analyses are used to combine information from independent studies.
+    \item Zabriskie et al. developed an exact permutation method for rare event binary meta-analyses.
+  \end{itemize}
+  \begin{table}
+    \small
+    \begin{tabular}{|l|r|r|r|r|}
+      \hline
+      Study & Trt. Event & Trt. Total & Ctrl. Event & Ctrl. Total\\
+      \hline
+      Barber & 10 & 52 & 12 & 47\\
+      \hline
+      Norris & 5 & 226 & 15 & 228\\
+      \hline
+      Kahler & 0 & 38 & 6 & 31\\
+      \hline
+      Ledwich & 2 & 20 & 3 & 20\\
+      \hline
+    \end{tabular}
+  \end{table}
+\end{frame}
+
+\begin{frame} 
+  \frametitle{Confidence distributions}
+  \begin{itemize}
+    \item Most meta-analysis methods produce a p-value and confidence interval at a single level of significance.
+    \item Confidence distributions (CDs) provide a comprehensive overview of the available inference on a parameter at all levels of significance.
+  \end{itemize}
+\end{frame}
+
+\begin{frame} 
+  \frametitle{Confidence curves}
+  \begin{itemize}
+    \item A confidence curve (CV) is a function of a CD that is used to easily
+    visualize CIs and extract p-values.
+  \end{itemize}
+  \begin{figure}
+    \includegraphics[scale=0.4]{cv.png}
+  \end{figure}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Confidence curves in meta-analysis}
+  \begin{itemize}
+    \item Some meta-analysis methods combine individual CVs to produce one overall CV.
+  \end{itemize}
+  \begin{figure}
+    \includegraphics[scale=0.4]{meta.png}
+  \end{figure}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Research goal}
+  \begin{itemize}
+    \item The method developed by Zabriskie et al. requires choosing a single level of significance.
+    \item We want to utilize CDs for this method.
+  \end{itemize}
+\end{frame}
+
+\begin{frame} 
+  \frametitle{Definition of CD}
+   Let $(\theta_-, \infty)$ be a one-sided $100(1-\alpha)\%$ CI for $\theta$, where the lower confidence bound $\theta_-$ is a function of the level of significance, $\alpha$. If, for every $\alpha \in (0, 1)$ and $\theta \in \Theta$, $\theta_-(\alpha)$ is continuous and increasing in $\alpha$ for each sample $\textbf{z}$, then $\theta_{-}^{-1}(\cdot) = \phi(\theta)$ is a CD.
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Exact permutation CD}
+  \begin{equation*} \label{eq:permCI}
+    R(\theta) = \frac
+    {\sum_{u^* = t(\mathbf{z}_{\text{obs}})}^{\max(t(\mathbf{z}))} \text{C}(u^* \vert \cdot) \exp\{\theta u^*\}}
+    {\sum_{u = \min(t(\mathbf{z}))}^{\max(t(\mathbf{z}))} \text{C}(u \vert \cdot) \exp\{\theta u\}} \text{,}
+  \end{equation*}
+  One-sided $100(1-\alpha)$\% CIs can be given by $(R^{-1}(\alpha),\infty)$ and $(-\infty, R^{-1}(1-\alpha))$.
+
+  A CD can be derived by inverting the lower confidence bound of a one-sided CI. Therefore, $\phi(\theta) = (R^{-1}(\alpha))^{-1} = R(\theta)$. 
+\end{frame}
+
+\begin{frame} 
+  \frametitle{Evaluating CVs}
+  \begin{itemize}
+    \item When evaluating CIs, coverage and width are calculated.
+    \item We plan on using area under the curve and height at the true parameter value as their CV counterparts. 
+  \end{itemize}
+  \begin{figure}
+    \includegraphics[scale=0.35]{cv.png}
+  \end{figure}
+\end{frame}
+
+\begin{frame} 
+  \frametitle{Conclusion}
+  \begin{itemize}
+    \item We calculated the CD for the method developed by Zabriskie et al. 
+    \item We found ways to evaluate the performance of a CV.
+  \end{itemize}
+\end{frame}
+
+\end{document}
