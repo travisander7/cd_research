@@ -1,0 +1,79 @@
+\documentclass{article}
+\usepackage{amsmath}
+
+\title{Proof for CD}
+\author{Travis Andersen}
+
+\begin{document}
+\maketitle  
+
+Goal: Show lower confidence bound $\theta_- = R^{-1}(\alpha)$ is continuous and increasing in $\alpha$. 
+
+\begin{equation} \label{eq:permCI}
+  R(\theta) = \frac
+  {\sum_{u^* = t(\mathbf{z}_{\text{obs}})}^{\max(t(\mathbf{z}))} \text{C}(u^* \vert \cdot) \exp\{\theta u^*\}}
+  {\sum_{u = \min(t(\mathbf{z}))}^{\max(t(\mathbf{z}))} \text{C}(u \vert \cdot) \exp\{\theta u\}}
+\end{equation}
+
+\begin{itemize}
+  \item If a function has an inverse, it is bijective.
+  \item If a bijective function is increasing, then its inverse is increasing
+  \item Therefore, we only need show that $R(\theta)$ is increasing to show that $R^{-1}(\alpha)$ is increasing. 
+\end{itemize}
+
+Following are a few ideas I have had on showing that $R(\theta)$ is increasing in $\theta$. 
+
+\section{Easy method}
+
+I didn't think this would work, but wanted to double check. Is it valid to write $R(\theta) = \sum_{u^* = t(\mathbf{z}_{\text{obs}})}^{\max(t(\mathbf{z}))} \text{C}^*(u^* \vert \cdot) \exp\{\theta u^*\}$, where $C^*(u^* \vert \cdot)$ is normalized? This would make showing that $R(\theta)$ is increasing very easy.
+
+\section{Taking the derivative of $R(\theta)$}
+
+We want to show that $\frac{\partial}{\partial \theta} \text{log}(R(\theta)) > 0$.
+
+\begin{align*}
+  \text{log}(R(\theta)) &= 
+  \text{log}\left(\sum_{u^*=t(z_{obs})}^{\text{max}(t(z))} C(u^*|\cdot)e^{\theta u^*} \right) - 
+  \text{log}\left(\sum_{u=\text{min}(t(z))}^{\text{max}(t(z))} C(u|\cdot)e^{\theta u}\right) \\
+  \frac{\partial}{\partial \theta} \text{log}(R(\theta)) &= 
+  \frac
+  {\sum_{u^*=t(z_{obs})}^{\text{max}(t(z))} u^* C(u^*|\cdot)e^{\theta u^*}}
+  {\sum_{u^*=t(z_{obs})}^{\text{max}(t(z))} C(u^*|\cdot)e^{\theta u^*}} -
+  \frac
+  {\sum_{u=\text{min}(t(z))}^{\text{max}(t(z))} u C(u|\cdot)e^{\theta u}}
+  {\sum_{u=\text{min}(t(z))}^{\text{max}(t(z))} C(u|\cdot)e^{\theta u}} \\
+  &\propto \left(\sum_{u^*=t(z_{obs})}^{\text{max}(t(z))} u^* C(u^*|\cdot)e^{\theta u^*}\right)
+  \left(\sum_{u=\text{min}(t(z))}^{\text{max}(t(z))} C(u|\cdot)e^{\theta u}\right) - \\
+  &\left(\sum_{u^*=t(z_{obs})}^{\text{max}(t(z))} C(u^*|\cdot)e^{\theta u^*}\right)
+  \left(\sum_{u=\text{min}(t(z))}^{\text{max}(t(z))} u C(u|\cdot)e^{\theta u}\right) \\
+  &\propto \left(\sum_{u^*=t(z_{obs})}^{\text{max}(t(z))} u^* C(u^*|\cdot)e^{\theta u^*}\right)
+  \left(\sum_{u=\text{min}(t(z))}^{t(z_{obs})-1} C(u|\cdot)e^{\theta u} + \sum_{u=t(z_{obs})}^{\text{max}(t(z))} C(u|\cdot)e^{\theta u}\right) - \\
+  &\left(\sum_{u^*=t(z_{obs})}^{\text{max}(t(z))} C(u^*|\cdot)e^{\theta u^*}\right)
+  \left(\sum_{u=\text{min}(t(z))}^{t(z_{obs})-1} u C(u|\cdot)e^{\theta u} + \sum_{u=t(z_{obs})}^{\text{max}(t(z))} u C(u|\cdot)e^{\theta u}\right) \\
+  &\propto \left(\sum_{u^*=t(z_{obs})}^{\text{max}(t(z))} u^* C(u^*|\cdot)e^{\theta u^*}\right)
+  \left(\sum_{u=\text{min}(t(z))}^{t(z_{obs})-1} C(u|\cdot)e^{\theta u}\right) - \\
+  &\left(\sum_{u^*=t(z_{obs})}^{\text{max}(t(z))} C(u^*|\cdot)e^{\theta u^*}\right)
+  \left(\sum_{u=\text{min}(t(z))}^{t(z_{obs})-1} u C(u|\cdot)e^{\theta u}\right) \\
+\end{align*}
+
+I am not sure where to go from here. 
+
+\section{Working with $R(\theta)$ directly}
+
+We can write 
+\begin{align*}
+  R(\theta) &= \frac
+  {\sum_{u^* = t(\mathbf{z}_{\text{obs}})}^{\max(t(\mathbf{z}))} \text{C}(u^* \vert \cdot) \exp\{\theta u^*\}}
+  {\sum_{u = \min(t(\mathbf{z}))}^{\max(t(\mathbf{z}))} \text{C}(u \vert \cdot) \exp\{\theta u\}} \\
+  &= \frac
+  {\sum_{u^* = t(\mathbf{z}_{\text{obs}})}^{\max(t(\mathbf{z}))} \text{C}(u^* \vert \cdot) \exp\{\theta u^*\}}
+  {\sum_{u = \min(t(\mathbf{z}))}^{t(\mathbf{z}_{\text{obs}})-1} \text{C}(u \vert \cdot) \exp\{\theta u\} + 
+  \sum_{u^* = t(\mathbf{z}_{\text{obs}})}^{\max(t(\mathbf{z}))} \text{C}(u^* \vert \cdot) \exp\{\theta u^*\}} \\
+  &= \frac{f(\theta)}{g(\theta) + f(\theta)}, \text{ where } \\
+  f(\theta) &= \sum_{u^* = t(\mathbf{z}_{\text{obs}})}^{\max(t(\mathbf{z}))} \text{C}(u^* \vert \cdot) \exp\{\theta u^*\} \text{ and } \\
+  g(\theta) &= \sum_{u = \min(t(\mathbf{z}))}^{t(\mathbf{z}_{\text{obs}})-1} \text{C}(u \vert \cdot) \exp\{\theta u\} \\
+\end{align*}
+
+If we can show $f(\theta)$ is increasing faster in $\theta$ than $g(\theta)$, that would indicate that $R(\theta)$ is increasing in $\theta$, right? Or maybe there is something else we can extract here. 
+
+\end{document}

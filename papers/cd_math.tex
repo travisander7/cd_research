@@ -73,21 +73,37 @@ Let $\theta \in \Theta$ and $\textbf{Z} \in \mathcal{Z}$. A confidence distribut
 \end{align*}
 
 \subsection{Show $C(\theta|\textbf{z})$ is nondecreasing}
+
+\begin{itemize}
+  \item If a function has an inverse, it is bijective.
+  \item If a function is increasing, then its inverse is increasing
+  \item Therefore, we only need show that $R(\theta)$ is increasing to show that $R^{-1}(\theta)$ is increasing. 
+\end{itemize}
+
 \begin{align*}
   \text{log}[C(\theta|\textbf{z})] &= 
   \text{log}\left(
-    \sum_{u^*=t(z_{obs})}^{\text{max}(t(z))} C(u^*|s^\alpha(z), s^\delta(z), s^{\delta_2}(z))e^{\theta u^*}
+    \sum_{u^*=t(z_{obs})}^{\text{max}(t(z))} C(u^*|\cdot)e^{\theta u^*} 
   \right) - 
   \text{log}\left(
-    \sum_{u=\text{min}(t(z))}^{\text{max}(t(z))} C(u|s^\alpha(z), s^{\delta_1}(z), s^{\delta_2}(z))e^{\theta u}
+    \sum_{u=\text{min}(t(z))}^{\text{max}(t(z))} C(u|\cdot)e^{\theta u}
   \right) \\
   \frac{\partial}{\partial \theta} \text{log}[C(\theta|\textbf{z})] &= 
   \frac
-  {\sum_{u^*=t(z_{obs})}^{\text{max}(t(z))} u^* C(u^*|s^\alpha(z), s^\delta(z), s^{\delta_2}(z))e^{\theta u^*}}
-  {\sum_{u^*=t(z_{obs})}^{\text{max}(t(z))} C(u^*|s^\alpha(z), s^\delta(z), s^{\delta_2}(z))e^{\theta u^*}} -
+  {\sum_{u^*=t(z_{obs})}^{\text{max}(t(z))} u^* C(u^*|\cdot)e^{\theta u^*}}
+  {\sum_{u^*=t(z_{obs})}^{\text{max}(t(z))} C(u^*|\cdot)e^{\theta u^*}} -
   \frac
-  {\sum_{u=\text{min}(t(z))}^{\text{max}(t(z))} u C(u|s^\alpha(z), s^{\delta_1}(z), s^{\delta_2}(z))e^{\theta u}}
-  {\sum_{u=\text{min}(t(z))}^{\text{max}(t(z))} C(u|s^\alpha(z), s^{\delta_1}(z), s^{\delta_2}(z))e^{\theta u}}
+  {\sum_{u=\text{min}(t(z))}^{\text{max}(t(z))} u C(u|\cdot)e^{\theta u}}
+  {\sum_{u=\text{min}(t(z))}^{\text{max}(t(z))} C(u|\cdot)e^{\theta u}} \\
+  &= 
+  \frac
+  {\sum_{u^*=t(z_{obs})}^{\text{max}(t(z))} u^* C(u^*|\cdot)e^{\theta u^*}}
+  {\sum_{u^*=t(z_{obs})}^{\text{max}(t(z))} C(u^*|\cdot)e^{\theta u^*}} -
+  \frac
+  {\sum_{u=\text{min}(t(z))}^{t(z_{obs})-1} u C(u|\cdot)e^{\theta u} + 
+  \sum_{u^*=t(z_{obs})}^{\text{max}(t(z))} u^* C(u^*|\cdot)e^{\theta u^*}}
+  {\sum_{u=\text{min}(t(z))}^{t(z_{obs})-1} C(u|\cdot)e^{\theta u} + 
+  \sum_{u^*=t(z_{obs})}^{\text{max}(t(z))} C(u^*|\cdot)e^{\theta u^*}} \\
 \end{align*}
 
 \subsection{Show $C(\theta|\textbf{z})$ is right-continuous}
